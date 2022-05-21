@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/masonry.css" />
+        <title>BDS</title>
+
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+            import {
+                getFirestore,
+                collection,
+                getDocs,
+            } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-firestore.js";
+            const firebaseConfig = {
+                apiKey: "AIzaSyBqJHXbl4Rq-KYxoGTT4mRwikBCKe6E9Xo",
+                authDomain: "limerick-db.firebaseapp.com",
+                projectId: "limerick-db",
+                storageBucket: "limerick-db.appspot.com",
+                messagingSenderId: "43009373528",
+                appId: "1:43009373528:web:0e71dcb01a9f807fe3a12d",
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+
+            const db = getFirestore(app);
+
+            let publications = [];
+
+            const getPublicationElement = (sr, names, doi, title, project) => {
+                return `
+                    <td>${sr}</td>
+                    <td>
+                        ${names.join(", ")}
+                    </td>
+                    <td>
+                        ${title}
+                    </td>
+                    <td>
+                        <a
+                            href="${doi}"
+                            target="blank"
+                            >${doi}</a
+                        >
+                    </td>
+                    <td>${project}</td>
+                `;
+            };
+            window.onload = async () => {
+                var data = [];
+
+                const pubTable = document.getElementById("publication-table");
+                const loader = document.getElementById("loader");
+
+                pubTable.style.display = "none";
+                data = (await getDocs(collection(db, "publications"))).docs.map(
+                    (val) => val.data()
+                );
+                publications = data;
+                const table = document.getElementById("publications-data");
+
+                data.forEach((val, idx) => {
+                    const ele = document.createElement("tr");
+                    ele.innerHTML = getPublicationElement(
+                        idx + 1,
+                        val.authors,
+                        val.doi,
+                        val.title,
+                        val.project
+                    );
+                    table.appendChild(ele);
+                });
+                pubTable.style.display = "block"
+                loader.remove()
+                $(".mydatatable").DataTable({
+                    order: [[0, "asc"]],
+                });
+            };
+        </script>
+        <!-- Google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;700&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <!-- font-family: 'Inter', sans-serif; font-family: 'Cormorant Garamond', serif; font-family: 'Roboto Condensed', sans-serif;  -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Ubuntu&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Stylesheets -->
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/css/font-awesome.min.css"
+        />
+        <!-- Font Awsome -->
+        <link
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            rel="stylesheet"
+        />
+        <!--Data Table-->
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css"
+        />
+
+        <!-- Custom Styles -->
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/nav.css" />
+        <link rel="stylesheet" href="css/navstyle.css" />
+    </head>
+
+    <body>
+        <!-- HEADER  -->
+        <div id="header-nav"></div>
+
+        <!--Body Start-->
+        <section class="inbody">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="name text-center text-white">Publications</h1>
+                    <hr class="hr" />
+                </div>
+            </div>
+            <section class="top-section">
+                <div class="container">
+                  <div>
+                      <center >
+                    <div
+                    id="loader"
+                        class="spinner-grow bg-success"
+                        style="width: 3rem; height: 3rem"
+                        role="status"
+                    >
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </center>
+                    
+                    <div class="container mb-3 mt-3" id="publication-table">
+                        <table
+                            class="table table-striped table-bordered mydatatable"
+                            style="width: 100%"
+                            id="mydatatable"
+                        >
+                            <thead class="thead-ulgreen">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Authors</th>
+                                    <th>Paper Title</th>
+                                    <th>DOI</th>
+                                    <th>Project</th>
+                                </tr>
+                            </thead>
+                            <tbody id="publications-data"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Footer -->
+        <div id="footer-main"></div>
+
+        <!-- Bootstrap JQuery Popper scripts -->
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- PAGE LEVEL SCRIPTS -->
+        <script
+            type="text/javascript"
+            src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"
+        ></script>
+        <script>
+            // $(".mydatatable").DataTable({
+            //     order: [[0, "asc"]],
+            // });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $("#header-nav").load("header.html");
+                $("#footer-main").load("footer.html");
+            });
+        </script>
+    </body>
+</html>

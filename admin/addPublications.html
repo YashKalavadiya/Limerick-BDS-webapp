@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Add Publications</title>
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+            import {
+                doc,
+                setDoc,
+                getFirestore,
+                serverTimestamp,
+            } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-firestore.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyBqJHXbl4Rq-KYxoGTT4mRwikBCKe6E9Xo",
+                authDomain: "limerick-db.firebaseapp.com",
+                projectId: "limerick-db",
+                storageBucket: "limerick-db.appspot.com",
+                messagingSenderId: "43009373528",
+                appId: "1:43009373528:web:0e71dcb01a9f807fe3a12d",
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+
+            const db = getFirestore(app);
+
+            function uuidv4() {
+                return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
+                    /[018]/g,
+                    (c) =>
+                        (
+                            c ^
+                            (crypto.getRandomValues(new Uint8Array(1))[0] &
+                                (15 >> (c / 4)))
+                        ).toString(16)
+                );
+            }
+
+            window.uploadData = async (data) => {
+                data = {
+                    ...data,
+                    createdOn: serverTimestamp(),
+                };
+                await setDoc(doc(db, "publications", uuidv4()), data);
+                document.getElementById("publicatiom-form").reset();
+            };
+        </script>
+
+        <!-- Google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800;900&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <!-- font-family: 'Inter', sans-serif; font-family: 'Cormorant Garamond', serif; font-family: 'Roboto Condensed', sans-serif;  -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Ubuntu&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Stylesheets -->
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        />
+        <link
+            rel="jsbundle"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"
+        />
+        <link
+            rel="jquery"
+            href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+        />
+
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/css/font-awesome.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+        <link rel="stylesheet" href="addPublications.css" />
+    </head>
+    <body>
+        <div class="container">
+            ]
+            <div class="text-center mt-5">
+                <h1>Add Publication</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-7 mx-auto">
+                    <div class="card mt-2 mx-auto p-4 bg-light">
+                        <div class="card-body bg-light">
+                            <div class="container">
+                                <form
+                                    id="publicatiom-form"
+                                    role="form"
+                                    onsubmit="submitPublication(event)"
+                                >
+                                    <div class="controls">
+                                        <div id="authorNames"></div>
+                                        <button
+                                            type="button"
+                                            onclick="addPublisher()"
+                                            class="btn btn-success mb-3"
+                                        >
+                                            Add Field
+                                        </button>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_email"
+                                                        >Paper Title</label
+                                                    >
+                                                    <input
+                                                        id="title"
+                                                        type="text"
+                                                        name="title"
+                                                        class="form-control"
+                                                        placeholder="Enter Paper Title "
+                                                        required="required"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_email"
+                                                        >DOI url</label
+                                                    >
+                                                    <input
+                                                        id="doi"
+                                                        type="text"
+                                                        name="doi"
+                                                        class="form-control"
+                                                        placeholder="Enter DOI URL"
+                                                        required="required"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_email"
+                                                        >Project</label
+                                                    >
+                                                    <input
+                                                        id="project"
+                                                        type="text"
+                                                        name="project"
+                                                        class="form-control"
+                                                        placeholder="Enter Project"
+                                                        required="required"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input
+                                                    type="submit"
+                                                    class="btn btn-success btn-send pt-2 btn-block"
+                                                    value="Submit"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.8 -->
+                </div>
+                <!-- /.row-->
+            </div>
+        </div>
+    </body>
+    <script>
+        var publishersCount = 0;
+
+        const authorsContainer = document.getElementById("authorNames");
+
+        var publishers = [];
+
+        const updatePublisher = (e, idx) => {
+            publishers[idx] = e.target.value;
+            console.log(publishers);
+        };
+
+        const deletePublisher = (idx) => {
+            publishers = [
+                ...publishers.splice(0, idx),
+                ...publishers.splice(idx + 1),
+            ];
+            const element = document.getElementById(`author_${idx}`);
+            element.remove();
+            console.log(publishers);
+            publishersCount -= 1;
+            reRenderElements();
+        };
+
+        const reRenderElements = () => {
+            var child = authorsContainer.lastElementChild;
+            while (child) {
+                authorsContainer.removeChild(child);
+                child = authorsContainer.lastElementChild;
+            }
+
+            for (let i = 0; i < publishersCount; i++) {
+                const nameTemplate = `
+            <div class="row d-flex justify-content-center align-items-center" id="author_${i}">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="form_name"
+                        >Name (Author ${i + 1})*</label
+                    >
+                    <input
+                        id="name_${i}"
+                        type="text"
+                        name="name"
+                        value="${publishers[i]}"
+                        class="form-control"
+                        placeholder="Please enter author's name"
+                        required="required"
+                        data-error="Name is required."
+                        oninput="updatePublisher(event, ${i})"
+                        />
+                </div>
+                </div>
+                
+                <svg onclick="deletePublisher(${i})" xmlns="http://www.w3.org/2000/svg" width="25" height="30" fill="currentColor" class="bi bi-trash mt-3" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                    </svg>
+                    </div>
+                    `;
+                const field = document.createElement("div");
+                field.innerHTML = nameTemplate;
+                authorsContainer.appendChild(field);
+            }
+        };
+
+        function addPublisher() {
+            const nameTemplate = `
+            <div class="row d-flex justify-content-center align-items-center" id="author_${publishersCount}">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="form_name"
+                        >Name (Author ${publishersCount + 1})*</label
+                    >
+                    <input
+                        id="name_${publishersCount}"
+                        type="text"
+                        name="name"
+                        class="form-control"
+                        placeholder="Please enter author's name"
+                        required="required"
+                        data-error="Name is required."
+                        oninput="updatePublisher(event, ${publishersCount})"
+                        />
+                </div>
+                </div>
+                
+                <svg onclick="deletePublisher(${publishersCount})" xmlns="http://www.w3.org/2000/svg" width="25" height="30" fill="currentColor" class="bi bi-trash mt-3" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                    </svg>
+                    </div>
+                    `;
+            publishersCount += 1;
+            const field = document.createElement("div");
+            field.innerHTML = nameTemplate;
+            authorsContainer.appendChild(field);
+        }
+
+        const submitPublication = (e) => {
+            e.preventDefault();
+            const data = {
+                doi: document.getElementById("doi").value,
+                title: document.getElementById("title").value,
+                project: document.getElementById("project").value,
+                authors: publishers,
+            };
+            uploadData(data);
+        };
+
+        window.onload = () => {
+            addPublisher();
+        };
+    </script>
+</html>
