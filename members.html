@@ -6,6 +6,102 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Team Page</title>
 
+	<script type="module">
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+		import {
+			getFirestore,
+			collection,
+			getDocs,
+			query,
+			orderBy
+		} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-firestore.js";
+		const firebaseConfig = {
+			apiKey: "AIzaSyBqJHXbl4Rq-KYxoGTT4mRwikBCKe6E9Xo",
+			authDomain: "limerick-db.firebaseapp.com",
+			projectId: "limerick-db",
+			storageBucket: "limerick-db.appspot.com",
+			messagingSenderId: "43009373528",
+			appId: "1:43009373528:web:0e71dcb01a9f807fe3a12d",
+		};
+
+		const app = initializeApp(firebaseConfig);
+
+		const db = getFirestore(app);
+
+		window.setMembersData = (e, idx) => {
+			const member = window.members[idx]
+			localStorage.setItem("member", JSON.stringify(member))
+			window.open("/members/viewMember.html", "blank")
+		}
+
+		const getMemberCard = (member, idx) => {
+			return `
+				<div class="team text-center">
+					<img src=${member.imageURL} alt="Team Image" class="avatar">
+						<div class="title">
+							<h4>${member.name}</h4>
+							<h5 class="muted regular">Postdoctoral Researcher</h5>
+						</div>
+						<button onclick="setMembersData(event, ${idx})" class="btn btn-ulgreen-fill">About Me</button>
+				</div>
+			`
+		}
+		window.onload = async () => {
+			var data = [];
+			data = (await getDocs(query(collection(db, "members"), orderBy("createdOn")))).docs.map(
+				(val) => val.data()
+			);
+
+			const directorsSection = document.getElementById("director-section")
+			const facultySection = document.getElementById("faculty-section")
+			const postdoctoralSection = document.getElementById("postdoctoral-section")
+
+			const phdStudentSection = document.getElementById("phd-students")
+
+			window.members = data;
+			data.forEach((val, idx) => {
+
+				const ele = document.createElement("div");
+				const template = getMemberCard(val, idx)
+
+				if(val.designation === "Director") {
+					ele.className = "col-md-6 mx-auto"
+					ele.innerHTML = `
+					<div class="team text-center">
+						<img src=${val.imageURL} alt="Team Image" class="avatar">
+						<div class="title">
+							<h4>${val.name}</h4>
+							<h5 class="muted regular">Director</h5>
+						</div>
+						<button onclick="setMembersData(${idx})" class="btn btn-ulgreen-fill">About Me</button>
+					</div>
+					`
+					directorsSection.appendChild(ele)
+				}
+				else if(val.designation === "Faculty Member") {
+					ele.className = "col-md-4 mx-auto"
+					ele.innerHTML = template
+					facultySection.appendChild(ele)
+				}
+				else if(val.designation === "Postdoctoral Researcher"){
+					ele.className = "col-md-4 mx-auto"
+					ele.innerHTML = template
+					postdoctoralSection.appendChild(ele)
+				}
+				else if(val.designation === "Ph.D. student") {
+					ele.className = "col-md-4 mx-auto"
+					ele.innerHTML = template;
+					phdStudentSection.appendChild(ele)
+				}
+			});
+			// pubTable.style.display = "block"
+			// loader.remove()
+			// $(".mydatatable").DataTable({
+			// 	order: [[0, "asc"]],
+			// });
+		};
+	</script>
+
 	<!-- Google fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,17 +144,8 @@
 	  </div>
 	<section id="team" class="section gray-bg">
 		<div class="container">
-			<div class="row">
-				<div class="col-md-6 mx-auto">
-					<div class="team text-center">
-						<img src="images\director.jpg" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Conor Ryan</h4>
-							<h5 class="muted regular">Director</h5>
-						</div>
-						<a href="members/conor.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-					</div>
-				</div>
+			<div class="row" id="director-section">
+				<!-- Director's data goes here -->
 			</div>
 		</div>
 	</section>
@@ -67,27 +154,8 @@
 </section>
 	<section id="team" class="section gray-bg">
 		<div class="container">
-			<div class="row">
-				<div class="col-md-4 mx-auto">
-					<div class="team text-center">
-						<img src="images\j.j.png" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>J. J. Collins</h4>
-							<h5 class="muted regular">Faculty Member</h5>
-						</div>
-						<a href="members/jj.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-					</div>
-				</div>
-				<div class="col-md-4 mx-auto">
-					<div class="team text-center">
-						<img src="images\james.png" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>James Patten</h4>
-							<h5 class="muted regular">Faculty Member</h5>
-						</div>
-						<a href="members/james.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-					</div>
-				</div>
+			<div class="row" id="faculty-section">
+				
 		 </div>
 	  </div>
 	</section>
@@ -96,68 +164,8 @@
 </section>
 <section id="team" class="section gray-bg">
 	<div class="container">
-		<div class="row">
-			<div class="col-md-4">
-				<div class="team text-center">
-					<img src="images\meghana mam.jpg" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Meghana Kshirsagar</h4>
-							<h5 class="muted regular">Postdoctoral Researcher</h5>
-						</div>
-						<a href="members/kshirsagar.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="team text-center">
-						<img src="images\Enrique.jpg" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Enrique Naredo</h4>
-							<h5 class="muted regular">Postdoctoral Researcher</h5>
-						</div>
-						<a href="members/enrique.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-				</div>
-			</div>
-
-			<div class="col-md-4">
-				<div class="team text-center">
-						<img src="images\yao.png" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Yao Yao</h4>
-							<h5 class="muted regular">Postdoctoral Researcher</h5>
-						</div>
-						<a href="members/yao.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-					</div>
-				</div>
-
-		  </div>
-		</div>
-	</div>
-</section>
-
-<section id="team" class="section gray-bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4 mx-auto">
-				<div class="team text-center">
-					<img src="images\Douglas.png" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Douglas Mota Dias</h4>
-							<h5 class="muted regular">Postdoctoral Researcher</h5>
-						</div>
-						<a href="members/Douglas.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-				</div>
-			</div>
-
-				<div class="col-md-4 mx-auto">
-					<div class="team text-center">
-							<img src="images\Aiman.jpg" alt="Team Image" class="avatar">
-							<div class="title">
-								<h4>Aiman Mahgoub</h4>
-								<h5 class="muted regular">Postdoctoral Researcher </h5>
-							</div>
-							<a href="members/aiman.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-					</div>
-				</div>
+		<div class="row" id="postdoctoral-section">
+			
 		</div>
 	</div>
 </section>
@@ -166,139 +174,8 @@
 </section>
 <section id="team" class="section gray-bg">
 	<div class="container">
-		<div class="row">
-			<div class="col-md-4">
-				<div class="team text-center">
-						<img src="images\Mahsa.jpg" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Mahsa Mahdinejad</h4>
-							<h5 class="muted regular">Ph.D. student </h5>
-						</div>
-						<a href="members/mahsa.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-					</div>
-				</div>
-
-	    	<div class="col-md-4">
-				<div class="team text-center">
-					<img src="images\Atif.jpg" alt="Team Image" class="avatar">
-					<div class="title">
-							<h4>Atif</h4>
-							<h5 class="muted regular">Ph.D. student</h5>
-					</div>
-					<a href="members/atif.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-			    </div>
-			</div>
-			<div class="col-md-4">
-				<div class="team text-center">
-						<img src="images\Jack.jpg" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Jack McEllin</h4>
-							<h5 class="muted regular">Ph.D. Student</h5>
-						</div>
-						<a href="members/jack.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<section id="team" class="section gray-bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4">
-				<div class="team text-center">
-						<img src="images\Bilal.jpg" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Bilal Majeed</h4>
-							<h5 class="muted regular">Ph.D. Student </h5>
-						</div>
-						<a href="members/bilal.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-				</div>
-			</div>
-
-			<div class="col-md-4">
-				<div class="team text-center">
-					<img src="images\Samuel.jpg" alt="Team Image" class="avatar">
-					    <div class="title">
-							<h4>Samuel Carvalho</h4>
-							<h5 class="muted regular">Ph.D. student </h5>
-						</div>
-						<a href="members/samuel.html" target="_blank" class="btn btn-ulgreen-fill ripple">About Me</a>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="team text-center">
-						<img src="images\Allan.jpg" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Allan de Lima</h4>
-							<h5 class="muted regular">Ph.D. Student</h5>
-						</div>
-						<a href="members/allan.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-					</div>
-				</div>
-		</div>
-	</div>
-</section>
-<section id="team" class="section gray-bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4">
-				<div class="team text-center">
-						<img src="images\Sarmad Ali.jpg" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Muhammad Sarmad Ali</h4>
-							<h5 class="muted regular">Ph.D. student </h5>
-						</div>
-						<a href="members/sarmad.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-					</div>
-				</div>
-
-			<div class="col-md-4">
-				<div class="team text-center">
-					<img src="images\krishn kumar.png" alt="Team Image" class="avatar">
-					<div class="title">
-						<h4>Krishn Kumar Gupt</h4>
-						<h5 class="muted regular">Ph.D. student </h5>
-					</div>
-					<a href="members/krishn.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-			    </div>
-		    </div>
-			<div class="col-md-4">
-				<div class="team text-center">
-					<img src="images\Gauri.jpg" alt="Team Image" class="avatar">
-					<div class="title">
-						<h4>Gauri Vaidya</h4>
-						<h5 class="muted regular">Ph.D. student</h5>
-					</div>
-					<a href="members/gauri.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<section id="team" class="section gray-bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4 mx-auto">
-				<div class="team text-center">
-					<img src="images\Yumnah.jpg" alt="Team Image" class="avatar">
-					<div class="title">
-						<h4>Yumnah Hasan</h4>
-						<h5 class="muted regular">Ph.D. student</h5>
-					</div>
-					<a href="members/yumnah.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-				</div>
-			</div>
-
-			<div class="col-md-4 mx-auto">
-				<div class="team text-center">
-						<img src="images\Michael.png" alt="Team Image" class="avatar">
-						<div class="title">
-							<h4>Michael Tetteh</h4>
-							<h5 class="muted regular">Ph.D. student</h5>
-						</div>
-						<a href="members/Michael.html" target="_blank" class="btn btn-ulgreen-fill">About Me</a>
-				</div>
-			</div>
+		<div class="row" id="phd-students">
+			
         </div>
     </div>
 </section>
