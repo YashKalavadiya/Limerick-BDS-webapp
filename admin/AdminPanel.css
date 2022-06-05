@@ -1,0 +1,53 @@
+body {
+    font-family: "Lato", sans-serif;
+}
+
+h1 {
+    margin-bottom: 40px;
+}
+
+#navbar {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+label {
+    color: #333;
+}
+.help-block.with-errors {
+    color: #ff5050;
+    margin-top: 5px;
+}
+
+.card {
+    padding: 10px;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
+.tile {  
+    width: 100%;
+    display: inline-block;
+	box-sizing: border-box;
+	background: #fff;		
+	padding: 20px;
+	margin-bottom: 30px;
+} 
+
+ .title {
+    	margin-top: 0px;
+  }
+
+ .green {
+    color: #fff;
+  }
+.green {background: #005844 ;}
+
+ .green:hover {
+	background: #00A600;
+}		

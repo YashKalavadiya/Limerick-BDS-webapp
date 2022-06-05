@@ -21,6 +21,10 @@
                 uploadBytes,
                 getDownloadURL,
             } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-storage.js";
+            import {
+                getAuth,
+                onAuthStateChanged,
+            } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";
 
             // TODO: Add SDKs for Firebase products that you want to use
             // https://firebase.google.com/docs/web/setup#available-libraries
@@ -37,6 +41,20 @@
 
             // Initialize Firebase
             const app = initializeApp(firebaseConfig);
+
+
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is signed in, see docs for a list of available properties
+                    // https://firebase.google.com/docs/reference/js/firebase.User
+                    const uid = user.uid;
+                    // ...
+                } else {
+                    // User is signed out
+                    window.location.replace("./login.html");
+                }
+            });
 
             const db = getFirestore(app);
             const storage = getStorage();
@@ -71,7 +89,7 @@
                     createdOn: serverTimestamp(),
                 };
                 await setDoc(doc(db, "projects", uuidv4()), data);
-                document.getElementById("members-form").reset();
+                document.getElementById("project-form").reset();
             };
         </script>
 
@@ -116,7 +134,7 @@
     <body>
         <div class="container">
             <div class="text-center mt-5">
-                <h1>Add Member</h1>
+                <h1>Add Project</h1>
             </div>
 
             <div class="row">
@@ -125,7 +143,7 @@
                         <div class="card-body bg-light">
                             <div class="container">
                                 <form
-                                    id="members-form"
+                                    id="project-form"
                                     role="form"
                                     onsubmit="addProject(event)"
                                 >

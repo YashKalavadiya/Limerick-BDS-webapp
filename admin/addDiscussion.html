@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Add Discussion Groups</title>
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+            import {
+                doc,
+                setDoc,
+                getFirestore,
+            } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-firestore.js";
+
+            import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-storage.js";
+
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+            import {
+                getAuth,
+                onAuthStateChanged,
+            } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";
+            
+            
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyBqJHXbl4Rq-KYxoGTT4mRwikBCKe6E9Xo",
+                authDomain: "limerick-db.firebaseapp.com",
+                projectId: "limerick-db",
+                storageBucket: "limerick-db.appspot.com",
+                messagingSenderId: "43009373528",
+                appId: "1:43009373528:web:0e71dcb01a9f807fe3a12d",
+            };
+            
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is signed in, see docs for a list of available properties
+                    // https://firebase.google.com/docs/reference/js/firebase.User
+                    const uid = user.uid;
+                    // ...
+                } else {
+                    // User is signed out
+                    window.location.replace("./login.html");
+                }
+            });
+
+            const db = getFirestore(app);
+            const storage = getStorage();
+
+            function uuidv4() {
+                return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
+                    /[018]/g,
+                    (c) =>
+                        (
+                            c ^
+                            (crypto.getRandomValues(new Uint8Array(1))[0] &
+                                (15 >> (c / 4)))
+                        ).toString(16)
+                );
+            }
+
+            window.uploadImage = (data) => {
+                const imgRef = ref(storage, "discussionGroups/" + data.name);
+                const imageRef = imgRef._location.path;
+                return uploadBytes(imgRef, data).then((snapshot) => {
+                  return getDownloadURL(snapshot.ref).then((imageURL) => {
+                      return { imageRef, imageURL };
+                  });
+                });
+            }
+
+            window.uploadData = async (data) => {
+                // console.log("ASds");
+                await setDoc(doc(db, "discussionGroups", uuidv4()), data);
+                document.getElementById("discussion-form").reset();
+            };
+        </script>
+
+        <!-- Google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800;900&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <!-- font-family: 'Inter', sans-serif; font-family: 'Cormorant Garamond', serif; font-family: 'Roboto Condensed', sans-serif;  -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Ubuntu&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Stylesheets -->
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        />
+        <link
+            rel="jsbundle"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"
+        />
+        <link
+            rel="jquery"
+            href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+        />
+
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/css/font-awesome.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+        <link rel="stylesheet" href="addGDs.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="text-center mt-5">
+                <h1>Add Discussion Group</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-7 mx-auto">
+                    <div class="card mt-2 mx-auto p-4 bg-light">
+                        <div class="card-body bg-light">
+                            <div class="container">
+                                <form
+                                    id="discussion-form"
+                                    role="form"
+                                    onsubmit="submitDiscussionGroups(event)"
+                                >
+                                    <div class="controls">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_title"
+                                                        >Paper Title</label
+                                                    >
+                                                    <input
+                                                        id="title"
+                                                        type="text"
+                                                        name="title"
+                                                        class="form-control"
+                                                        placeholder="Enter Paper Title "
+                                                        required="required"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_link"
+                                                        >Link</label
+                                                    >
+                                                    <input
+                                                        id="link"
+                                                        type="text"
+                                                        class="form-control"
+                                                        name="link"
+                                                        placeholder="Enter the link"
+                                                        required="required"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_date"
+                                                        >Date</label
+                                                    >
+                                                    <div class="input-group date" id="datetimepicker1">
+                                                        <input
+                                                            id="date"
+                                                            type="date"
+                                                            name="date"
+                                                            class="form-control"
+                                                            placeholder="Enter Date"
+                                                            required="required"
+                                                        />
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_date">Image</label>
+                                                    <div class="mb-3">
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input
+                                                    id = "submitbtn"
+                                                    type="submit"
+                                                    class="btn btn-success btn-send pt-2 btn-block"
+                                                    value="Submit"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.8 -->
+                </div>
+                <!-- /.row-->
+            </div>
+        </div>
+    </body>
+    <script>
+        const inputElement = document.getElementById("formFile");
+        inputElement.addEventListener("change", handleFiles, false);
+        var imgData
+        async function handleFiles(e) {
+            const submitbtn = document.getElementById("submitbtn");
+            submitbtn.disabled = true;
+            imgData = await window.uploadImage(this.files[0]);
+            submitbtn.disabled = false;
+        }
+        
+        const submitDiscussionGroups = (e) => {
+            e.preventDefault();
+            const data = {
+                title: document.getElementById("title").value,
+                hyperlink: document.getElementById("link").value,
+                date: document.getElementById("date").value,
+                imageURL: imgData.imageURL,
+                imageRef: imgData.imageRef,
+            };
+            uploadData(data);
+        };
+    </script>
+</html>

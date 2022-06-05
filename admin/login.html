@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>BDS Admin Login</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <link rel="stylesheet" href="login.css"/>
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+            import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";
+
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyBqJHXbl4Rq-KYxoGTT4mRwikBCKe6E9Xo",
+                authDomain: "limerick-db.firebaseapp.com",
+                projectId: "limerick-db",
+                storageBucket: "limerick-db.appspot.com",
+                messagingSenderId: "43009373528",
+                appId: "1:43009373528:web:0e71dcb01a9f807fe3a12d",
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+
+            window.signIn = (username, password) => {
+                signInWithEmailAndPassword(auth, username, password).then((userCredential) => {
+                    const user = userCredential.user;
+                    window.location.replace("./panel.html");
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+            }
+
+            window.signUp = (email, password, name) => {
+                createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+                    // Signed In
+                    const user = userCredential.user;
+                    updateProfile(user, { displayName: name})
+                    .then(() => {
+                        console.log("profile updated");
+                        window.location.replace("./panel.html");
+                    }).
+                    catch((error) => {
+                        console.log(error);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+            }
+
+
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="info">
+                <h1>Limerick BDS Admin</h1>
+            </div>
+        </div>
+        <div class="form">
+            <div class="thumbnail"><img src="../images/logo-bds-white (2).png" alt=""/></div>
+            <p id="error"></p>
+                <form class="register-form">
+                    <input onfocus="resetErrors()" id="name" type="text" placeholder="Name"/>
+                    <input onfocus="resetErrors()" id="signUpPassword" type="password" placeholder="Password"/>
+                    <input onfocus="resetErrors()" id="email" type="text" placeholder="Email address"/>
+                    <button onclick="userSignUp(event)">Sign Up</button>
+                    <p class="message">Already registered? <a href="#">Sign In</a></p>
+                </form>
+                <form class="login-form">
+                    <input onfocus="resetErrors()" id="username" type="text" placeholder="Username"/>
+                    <input onfocus="resetErrors()" id="loginPassword" type="password" placeholder="Password"/>
+                    <button onclick="userLogin(event)">Login</button>
+                    <p class="message">Not registered? <a href="#">Create an account</a></p>
+                </form>
+            </div>
+        </div>
+        <script>
+            function userLogin(e) {
+                e.preventDefault()
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("loginPassword").value;
+                if (!username || !password) {
+                    document.getElementById("error").innerText = "Required Fields Empty";
+                }
+                else {
+                    signIn(username, password);
+                }
+            }
+
+            function userSignUp(e) {
+                e.preventDefault()
+                const name = document.getElementById("name").value;
+                const password = document.getElementById("signUpPassword").value;
+                const email = document.getElementById("email").value;
+                if (!name || !password || !email) {
+                    document.getElementById("error").innerText = "Required Fields Empty";
+                }
+                else if (password.length < 8) {
+                    document.getElementById("error").innerText = "Minimum 8 character required for password";
+                }
+                else {
+                    signUp(email, password, name);
+                }
+            }
+            function resetErrors() {
+                document.getElementById("error").innerText = ""
+            }
+        </script>
+        <script type="text/javascript">
+            $('.message a').click(function(){
+                $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+            });
+        </script>
+    </body>
+</html>

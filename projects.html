@@ -1,135 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Projects</title>
 
-  <title>Projects</title>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+            import {
+                getFirestore,
+                collection,
+                getDocs,
+                query,
+                orderBy,
+            } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-firestore.js";
+            const firebaseConfig = {
+                apiKey: "AIzaSyBqJHXbl4Rq-KYxoGTT4mRwikBCKe6E9Xo",
+                authDomain: "limerick-db.firebaseapp.com",
+                projectId: "limerick-db",
+                storageBucket: "limerick-db.appspot.com",
+                messagingSenderId: "43009373528",
+                appId: "1:43009373528:web:0e71dcb01a9f807fe3a12d",
+            };
 
+            const app = initializeApp(firebaseConfig);
 
+            const db = getFirestore(app);
 
-  <!-- Google fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800;900&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">    <!-- font-family: 'Inter', sans-serif; font-family: 'Cormorant Garamond', serif; font-family: 'Roboto Condensed', sans-serif;  -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Ubuntu&display=swap" rel="stylesheet">
+            window.setProjectData = (e, idx) => {
+                const projects = window.projects[idx];
+                localStorage.setItem("projects", JSON.stringify(projects));
+                window.open("viewProject.html", "blank");
+            };
 
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/nav.css">
-  <link rel="stylesheet" href="css/projects.css">
-  <link rel="stylesheet" href="css/navstyle.css">
-
-</head>
-
-<body>
-
-<!-- HEADER  -->
-<div id="header-nav"></div>
-
-  <!--Body Start-->
-  <div class="jumbotron jumbotron-fluid">
-		<div class="container">
-		  <h1 class="name text-center text-white">Projects</h1>
-		  <hr class="hr">
-		</div>
-	</div>
-  <section class="news pt-0">
-    <div class="container mt-md-5">
-      <ul class="row d-lg-flex list-unstyled image-block justify-content-center px-lg-0 mx-lg-0">
-        <li class="col-lg-4 col-md-5 image-block full-width p-3">
-          <div class="image-block-inner">
+            const getProjectCard = (project, idx) => {
+                return `
+      <div class="image-block-inner">
             <a class="mh-100" href="#">
-              <img src="images/acdc.jpg" alt="LunarXP Wins Space Innovator of the Year Award" class="img-responsive w-100"></a>
-            <span class="hp-posts-cat">ADDC</span>
-            <h4 class="mt-3"><a href="acdc.html">ADDC will be a completely new approach to circuit design...</a></h4>
+              <img src=${project.logoURL} alt=${
+                    project.logoRef
+                } class="img-responsive w-100"></a>
+            <span class="hp-posts-cat">${project.title}</span>
+            <h4 class="mt-3"><a href="acdc.html">${project.description.substr(
+                0,
+                74
+            )}...</a></h4>
+            <div onclick="setProjectData(event, ${idx})" class="read-more">Read more ></div>
+          </div>
+			`;
+            };
+            window.onload = async () => {
+                var data = [];
+                data = (
+                    await getDocs(
+                        query(collection(db, "projects"), orderBy("createdOn"))
+                    )
+                ).docs.map((val) => val.data());
 
-            <!--  <p></p> -->
-            <a href=acdc.html class="read-more">Read more ></a>
-          </div><!-- .image-block-inner -->
-        </li>
-        <li class="col-lg-4 col-md-5 image-block full-width p-3">
-          <div class="image-block-inner">
-            <a class="mh-100" href="#">
-              <img src="images/dairymaster.jpg" alt="LunarXP Wins Space Innovator of the Year Award" class="img-responsive w-100"></a>
-            <span class="hp-posts-cat">Dairymaster</span>
-            <h4 class="mt-3"><a href="#">Dairymaster are a dairy equipment and technology manufacturer based in Kerry. </a></h4>
-            <!--  <p></p> -->
-            <a href="dairymaster.html" class="read-more">Read more ></a>
-          </div><!-- .image-block-inner -->
-        </li>
-        <li class="col-lg-4 col-md-5 image-block full-width p-3">
-          <div class="image-block-inner">
-            <a class="mh-100" href="#">
-              <img src="images/gramatical-evolution.jpg" alt="New Spending Bill Expands Funding for Space Exploration" class="img-responsive w-100"></a>
-            <span class="hp-posts-cat">Ariadne</span>
-            <h4 class="mt-3"><a href="#">Ariadne is a Grammatical Evolution (GE) based test data generator...</a></h4>
-            <!--  <p></p> -->
-            <a href="ariadne.html" class="read-more">Read more ></a>
-          </div><!-- .image-block-inner -->
-        </li>
-      </ul>
-    </div>
-  </section>
+                const projectsContainer =
+                    document.getElementById("projects-container");
 
+                window.projects = data;
+                data.forEach((val, idx) => {
+                    const ele = document.createElement("li");
+                    const template = getProjectCard(val, idx);
+                    ele.className =
+                        "col-lg-4 col-md-5 image-block full-width p-3";
+                    ele.innerHTML = template;
+                    projectsContainer.appendChild(ele);
+                });
+            };
+        </script>
 
-  <section class="news pt-0">
-    <div class="container mt-md-5">
-      <ul class="row d-lg-flex list-unstyled image-block justify-content-center px-lg-0 mx-lg-0">
-        <li class="col-lg-4 col-md-5 image-block full-width p-3">
-          <div class="image-block-inner">
-            <a class="mh-100" href="#">
-              <img src="images/k-int.jpg" alt="LunarXP Sets Target for First Mars Landing in 2030" class="img-responsive w-100"></a>
-            <span class="hp-posts-cat">Knowledge Integration</span>
-            <h4 class="mt-3"><a href="knowledgeintegration.html">In this project, we aim to develop an interactive wiki knowledge base...</a></h4>
-            <!--  <p></p> -->
-            <a href="knowledgeintegration.html" class="read-more">Read more ></a>
-          </div><!-- .image-block-inner -->
-        </li>
-        <li class="col-lg-4 col-md-5 image-block full-width p-3">
-          <div class="image-block-inner">
-            <a class="mh-100" href="#">
-              <img src="images/blockchain.jpg" alt="New Spending Bill Expands Funding for Space Exploration" class="img-responsive w-100"></a>
-            <span class="hp-posts-cat">IntelliMedChain</span>
-            <h4 class="mt-3"><a href="#">Intellimedchain is a a data sharing and knowledge integration framework... </a></h4>
-            <!--  <p></p> -->
-            <a href="medchain.html" class="read-more">Read more ></a>
-          </div><!-- .image-block-inner -->
-        </li>
-      </ul>
-    </div>
-  </section>
+        <!-- Google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800;900&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <!-- font-family: 'Inter', sans-serif; font-family: 'Cormorant Garamond', serif; font-family: 'Roboto Condensed', sans-serif;  -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Ubuntu&display=swap"
+            rel="stylesheet"
+        />
 
- <!-- Footer -->
- <div id="footer-main"></div>
+        <!-- Stylesheets -->
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/css/font-awesome.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
 
+        <!-- Custom Styles -->
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/nav.css" />
+        <link rel="stylesheet" href="css/projects.css" />
+        <link rel="stylesheet" href="css/navstyle.css" />
+    </head>
 
+    <body>
+        <!-- HEADER  -->
+        <div id="header-nav"></div>
 
-  <!-- Bootstrap JQuery Popper scripts -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <!--Body Start-->
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="name text-center text-white">Projects</h1>
+                <hr class="hr" />
+            </div>
+        </div>
+        <section class="news pt-0">
+            <div class="container mt-md-5">
+                <ul
+                    class="row d-lg-flex list-unstyled image-block justify-content-center px-lg-0 mx-lg-0"
+                    id="projects-container"
+                ></ul>
+            </div>
+        </section>
 
-<!-- PAGE LEVEL SCRIPTS -->
-  <!-- Font Awsome -->
-  <script src="https://kit.fontawesome.com/f3ca79e6ea.js" crossorigin="anonymous"></script>
-  <script>
-    $(document).ready(function() {
-    $("#header-nav").load('header.html');
-    $("#footer-main").load('footer.html');
-  
-    });
-  
-    </script>
-  
-</body>
+        <!-- Footer -->
+        <div id="footer-main"></div>
 
+        <!-- Bootstrap JQuery Popper scripts -->
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- PAGE LEVEL SCRIPTS -->
+        <!-- Font Awsome -->
+        <script
+            src="https://kit.fontawesome.com/f3ca79e6ea.js"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            $(document).ready(function () {
+                $("#header-nav").load("header.html");
+                $("#footer-main").load("footer.html");
+            });
+        </script>
+    </body>
 </html>

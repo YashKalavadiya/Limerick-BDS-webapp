@@ -14,6 +14,11 @@
                 getFirestore,
                 serverTimestamp,
             } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-firestore.js";
+            import {
+                getAuth,
+                onAuthStateChanged,
+            } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";
+            
             // TODO: Add SDKs for Firebase products that you want to use
             // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -29,6 +34,18 @@
 
             // Initialize Firebase
             const app = initializeApp(firebaseConfig);
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is signed in, see docs for a list of available properties
+                    // https://firebase.google.com/docs/reference/js/firebase.User
+                    const uid = user.uid;
+                    // ...
+                } else {
+                    // User is signed out
+                    window.location.replace("./login.html");
+                }
+            });
 
             const db = getFirestore(app);
 
@@ -43,6 +60,7 @@
                         ).toString(16)
                 );
             }
+
 
             window.uploadData = async (data) => {
                 data = {
@@ -95,7 +113,6 @@
     </head>
     <body>
         <div class="container">
-            ]
             <div class="text-center mt-5">
                 <h1>Add Publication</h1>
             </div>

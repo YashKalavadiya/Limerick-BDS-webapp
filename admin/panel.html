@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Admin Panel</title>
+		<!-- Google fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+				href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800;900&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap"
+				rel="stylesheet"
+		/>
+		<!-- font-family: 'Inter', sans-serif; font-family: 'Cormorant Garamond', serif; font-family: 'Roboto Condensed', sans-serif;  -->
+		<link
+				href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Ubuntu&display=swap"
+				rel="stylesheet"
+		/>
+
+		<!-- Stylesheets -->
+		<link
+				rel="stylesheet"
+				href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		/>
+		<link
+				rel="jsbundle"
+				href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"
+		/>
+		<link
+				rel="jquery"
+				href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+		/>
+
+		<link
+				rel="stylesheet"
+				type="text/css"
+				href="font-awesome.min.css"
+		/>
+		<link
+				rel="stylesheet"
+				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+		<link rel="stylesheet" href="AdminPanel.css" />
+			<script type="module">
+				// Import the functions you need from the SDKs you need
+				import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+				import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";
+
+				// TODO: Add SDKs for Firebase products that you want to use
+				// https://firebase.google.com/docs/web/setup#available-libraries
+
+				// Your web app's Firebase configuration
+				const firebaseConfig = {
+						apiKey: "AIzaSyBqJHXbl4Rq-KYxoGTT4mRwikBCKe6E9Xo",
+						authDomain: "limerick-db.firebaseapp.com",
+						projectId: "limerick-db",
+						storageBucket: "limerick-db.appspot.com",
+						messagingSenderId: "43009373528",
+						appId: "1:43009373528:web:0e71dcb01a9f807fe3a12d",
+				};
+
+				// Initialize Firebase
+				const app = initializeApp(firebaseConfig);
+				const auth = getAuth(app);
+				onAuthStateChanged(auth, (user) => {
+						if (user) {
+								// User is signed in, see docs for a list of available properties
+								// https://firebase.google.com/docs/reference/js/firebase.User
+								const uid = user.uid;
+								// ...
+						} else {
+								// User is signed out
+								window.location.replace("./login.html");
+						}
+				});
+
+				window.signout = () => {
+					signOut(auth).then(() => {
+						console.log("Sign-out successful")
+						window.location.replace("./login.html");
+					}).catch((error) => {
+						// An error happened.
+						console.log(error);
+					});
+				}
+
+
+			</script>
+	</head>
+<body>
+	<div class="container">
+			<div class="row">
+					<div class="text-center mt-5" id="navbar">
+						<h1>Admin Panel</h1>
+						<button type="button" onclick="logout()" class="btn btn-success">Logout</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4">
+							<a href="addDiscussion.html">
+						<div class="tile green">
+							<h3 class="title">Add Discussion Group</h3>
+							<p>Add Discussion Group to BDS Website</p>
+						</div>
+						</a>
+					</div>
+					<div class="col-sm-4">
+							<a href="addPublications.html">
+						<div class="tile green">
+							<h3 class="title">Add Publication</h3>
+							<p>Add Publication to BDS Website</p>
+						</div>
+					</a>
+					</div>
+					<div class="col-sm-4">
+							<a href="workshopForm.html">
+						<div class="tile green">
+							<h3 class="title">Add Workshop</h3>
+							<p>Add Workshop to BDS Website</p>
+						</div>
+						</a>
+					</div>
+					<div class="col-sm-4">
+							<a href="addMembers.html">
+						<div class="tile green">
+							<h3 class="title">Add Members</h3>
+							<p>Add Members to BDS</p>
+						</div>
+						</a>
+					</div>
+					<div class="col-sm-4">
+							<a href="addProjects.html">
+						<div class="tile green">
+							<h3 class="title">Add Projects</h3>
+							<p>Add projects made by BDS along with collaborators and funders</p>
+						</div>
+						</a>
+					</div>
+				</div> 
+			</div>                    
+	</div>
+	<script>
+		function logout() {
+			window.signout();
+		}
+	</script>
+ </body>

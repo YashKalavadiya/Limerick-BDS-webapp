@@ -49,6 +49,70 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" />
     <link rel="stylesheet" href="css/weekly-animate.css" />
     <link rel="stylesheet" href="css/weekly-style.css" />
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+      import {
+          getDocs,
+          collection,
+          getFirestore,
+      } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-firestore.js";
+
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+          apiKey: "AIzaSyBqJHXbl4Rq-KYxoGTT4mRwikBCKe6E9Xo",
+          authDomain: "limerick-db.firebaseapp.com",
+          projectId: "limerick-db",
+          storageBucket: "limerick-db.appspot.com",
+          messagingSenderId: "43009373528",
+          appId: "1:43009373528:web:0e71dcb01a9f807fe3a12d",
+      };
+
+      const getDiscussionGroupsElement = (date, hyperlink, imageURL, title, i) => {
+        return `
+              <div class="img">
+                <img
+                  id = "image_${i}"
+                  src="${imageURL}"
+                  alt="Image"
+                  loading="lazy"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="text">
+                <a class="category d-block mb-4" href="#">${date}</a>
+                <h2>
+                  <a href="${hyperlink}"
+                    >${title}</a
+                  >
+                </h2>
+              </div>`
+      }
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      window.onload = async () => {
+        const container = document.getElementById("discussionContainer");
+        const loader = document.createElement("div");
+        loader.innerHTML = `<center><div class="spinner-grow text-success" role="status"><span class="sr-only">Loading...</span></div><center>`;
+        container.appendChild(loader);
+        const data = (await getDocs(collection(db, "discussionGroups"))).docs.map(val => val.data());
+        var index = 0;
+        for (let item of data) {
+          console.log(data);
+          const element = document.createElement("div");
+          element.className = "media-29101 d-md-flex w-100"
+          element.innerHTML = getDiscussionGroupsElement(item.date, item.hyperlink, item.imageURL, item.title, index);
+          container.appendChild(element);
+          index++;
+        }
+        container.removeChild(loader);
+      }
+    </script>
   </head>
 
   <body>
@@ -71,83 +135,7 @@
 
         <div class="owl-carousel owl-1">
           <!-- Row 1 Tab 1-->
-          <div class="tab1">
-            <div class="media-29101 d-md-flex w-100">
-              <div class="img">
-                <img
-                  src="images/weekly-activities/discussion4.jpeg"
-                  alt="Image"
-                  class="img-fluid"
-                />
-              </div>
-              <div class="text">
-                <a class="category d-block mb-4" href="#">28th Feb 2022</a>
-                <h2>
-                  <a href="https://pubmed.ncbi.nlm.nih.gov/24079729/"
-                    >A Simple Approach to Lifetime Learning in Genetic Programming-Based
-                    Symbolic Regression</a
-                  >
-                </h2>
-              </div>
-            </div>
-            <!-- .item -->
-            <div class="media-29101 d-md-flex w-100">
-              <div class="img">
-                <img
-                  src="images/weekly-activities/discussion3.jpeg"
-                  alt="Image"
-                  class="img-fluid"
-                />
-              </div>
-              <div class="text">
-                <a class="category d-block mb-4" href="#">21st Feb 2022</a>
-                <h2>
-                  <a href="https://ieeexplore.ieee.org/document/5499431"
-                    >Modeling Financial time Series using Grammatical
-                    Swarm</a
-                  >
-                </h2>
-              </div>
-            </div>
-            <!-- .item -->
-           
-            <div class="media-29101 d-md-flex w-100">
-              <div class="img">
-                <img
-                  src="images/weekly-activities/discussion2.jpeg"
-                  alt="Image"
-                  class="img-fluid"
-                />
-              </div>
-              <div class="text">
-                <a class="category d-block mb-4" href="#">14th Feb 2022</a>
-                <h2>
-                  <a href="https://www.mdpi.com/1424-8220/18/4/1288"
-                    >Evolutionary Design of Convolutional Neural Networks for
-                    Human Activity Recognition in Sensor-Rich Environments</a
-                  >
-                </h2>
-              </div>
-            </div>
-            <!-- .item -->
-            <div class="media-29101 d-md-flex w-100">
-              <div class="img">
-                <img
-                  src="images/weekly-activities/picture1.jpg"
-                  alt="Image"
-                  class="img-fluid"
-                />
-              </div>
-              <div class="text">
-                <a class="category d-block mb-4" href="#">7th February, 2022</a>
-                <h2>
-                  <a
-                    href="https://www.blogs.uni-mainz.de/fb03-wi-isym/files/2020/01/evocop2006.pdf"
-                    >On the Locality of Grammatical Evolution</a
-                  >
-                </h2>
-              </div>
-            </div>
+          <div class="tab1" id="discussionContainer">
             <!-- .item -->
           </div>
 
