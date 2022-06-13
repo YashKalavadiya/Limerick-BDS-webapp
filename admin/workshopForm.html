@@ -1,117 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BDS</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BDS</title>
 
-    <!-- Google fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;700&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap"
-      rel="stylesheet"
-    />
-    <!-- font-family: 'Inter', sans-serif; font-family: 'Cormorant Garamond', serif; font-family: 'Roboto Condensed', sans-serif;  -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Ubuntu&display=swap"
-      rel="stylesheet"
-    />
-    <!--Dummy Fonts-->
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Playfair+Display:400,900&display=swap"
-      rel="stylesheet"
-    />
+        <!-- Google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;700&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <!-- font-family: 'Inter', sans-serif; font-family: 'Cormorant Garamond', serif; font-family: 'Roboto Condensed', sans-serif;  -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Ubuntu&display=swap"
+            rel="stylesheet"
+        />
+        <!--Dummy Fonts-->
+        <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css?family=Playfair+Display:400,900&display=swap"
+            rel="stylesheet"
+        />
 
-    <!-- Stylesheets -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" type="text/css" href="font-awesome.min.css" />
+        <!-- Stylesheets -->
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" type="text/css" href="font-awesome.min.css" />
 
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="workshopForm.css" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="nav.css" />
-    <link rel="stylesheet" href="navstyle.css" />
-  </head>
+        <!-- Custom Styles -->
+        <link rel="stylesheet" href="workshopForm.css" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="nav.css" />
+        <link rel="stylesheet" href="navstyle.css" />
+    </head>
 
-  <body>
-    <!-- HEADER  -->
-    <div id="header-nav"></div>
+    <body>
+        <!-- HEADER  -->
+        <div id="header-nav"></div>
 
-    <!--Body Start-->
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container">
-        <h1 class="name text-center text-white">Fill Details of Workshop</h1>
-        <hr class="hr" />
-      </div>
-    </div>
-    <div class="content">
-      <div class="container">
-        <form class="formbox" id="workshopForm">
-          <span class="error"> Something went wrong!!!</span>
-          <span class="success"> Workshop Details Added Successfully!!!</span>
-          <span class="info"> Uploading Image...</span>
-          <label for="name">Name of Workshop</label>
-          <input type="text" id="name" name="name" />
-          <label for="date">Date of Workshop</label>
-          <input type="date" name="date" id="date" />
-          <label for="author">Will be Conducted by</label>
-          <input type="text" id="author" name="author" />
-          <label for="poster">Poster of Workshop</label>
-          <input type="file" name="poster" id="image" accept="image/*" />
-          <button type="submit" id="submit-btn">Submit</button>
-        </form>
-      </div>
-    </div>
+        <!--Body Start-->
+        <!-- <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="name text-center text-white">
+                    Fill Details of Workshop
+                </h1>
+                <hr class="hr" />
+            </div>
+        </div>
+        <div class="content">
+            <div class="container">
+                <form class="formbox" id="workshopForm">
+                    <span class="error"> Something went wrong!!!</span>
+                    <span class="success">
+                        Workshop Details Added Successfully!!!</span
+                    >
+                    <span class="info"> Uploading Image...</span>
+                    <div class="form-group">
+                        <label for="name">Name of Workshop</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="name"
+                            name="name"
+                        />
+                    </div>
+                    <label for="date">Date of Workshop</label>
+                    <input type="date" name="date" id="date" />
 
-    <!-- Footer -->
-    <div id="footer-main"></div>
+                    <label for="author">Will be Conducted by</label>
+                    <input type="text" id="author" name="author" />
+                    <label for="poster">Poster of Workshop</label>
+                    <input
+                        type="file"
+                        name="poster"
+                        id="image"
+                        accept="image/*"
+                    />
+                    <button type="submit" id="submit-btn">Submit</button>
+                </form>
+            </div>
+        </div> -->
 
-    <!-- Firebase -->
-    <script type="module" src="firebase.js"></script>
+        <div class="container">
+            <div class="text-center mt-5">
+                <h1>Add a new Workshop</h1>
+            </div>
 
-    <!-- Bootstrap JQuery Popper scripts -->
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-      crossorigin="anonymous"
-    ></script>
+            <div class="row">
+                <div class="col-lg-7 mx-auto">
+                    <div class="card mt-2 mx-auto p-4 bg-light">
+                        <div class="card-body bg-light">
+                            <div class="container">
+                                <form id="workshopForm" role="form">
+                                    <span class="error">
+                                        Something went wrong!!!</span
+                                    >
+                                    <span class="success">
+                                        Workshop Details Added
+                                        Successfully!!!</span
+                                    >
+                                    <span class="info">
+                                        Uploading Image...</span
+                                    >
+                                    <div class="controls">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_title"
+                                                        >Title</label
+                                                    >
+                                                    <input
+                                                        placeholder="Enter Workshop Title"
+                                                        required="required"
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="name"
+                                                        name="name"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_date"
+                                                        >Date</label
+                                                    >
+                                                    <div
+                                                        class="input-group date"
+                                                        id="datetimepicker1"
+                                                    >
+                                                        <input
+                                                            id="date"
+                                                            type="date"
+                                                            name="date"
+                                                            class="form-control"
+                                                            placeholder="Enter Date"
+                                                            required="required"
+                                                        />
+                                                        <span
+                                                            class="glyphicon glyphicon-calendar"
+                                                        ></span>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-    <!-- PAGE LEVEL SCRIPTS -->
-    <!-- FontAwsome JS -->
-    <script
-      src="https://kit.fontawesome.com/f3ca79e6ea.js"
-      crossorigin="anonymous"
-    ></script>
-    <script>
-      $(document).ready(function () {
-        $("#header-nav").load("header.html");
-        $("#footer-main").load("footer.html");
-      });
-    </script>
-  </body>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_title"
+                                                        >Spekar</label
+                                                    >
+                                                    <input
+                                                        placeholder="Enter Speakers Name"
+                                                        required="required"
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="author"
+                                                        name="author"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="form_date"
+                                                        >Poster</label
+                                                    >
+                                                    <div class="mb-3">
+                                                        <input
+                                                            class="form-control"
+                                                            type="file"
+                                                            name="poster"
+                                                            id="image"
+                                                            accept="image/*"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input
+                                                    id="submitbtn"
+                                                    type="submit"
+                                                    class="btn btn-success btn-send pt-2 btn-block"
+                                                    value="Submit"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.8 -->
+                </div>
+                <!-- /.row-->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div id="footer-main"></div>
+
+        <!-- Firebase -->
+        <script type="module" src="firebase.js"></script>
+
+        <!-- Bootstrap JQuery Popper scripts -->
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- PAGE LEVEL SCRIPTS -->
+        <!-- FontAwsome JS -->
+        <script
+            src="https://kit.fontawesome.com/f3ca79e6ea.js"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            $(document).ready(function () {
+                $("#header-nav").load("header.html");
+                $("#footer-main").load("footer.html");
+            });
+        </script>
+    </body>
 </html>
