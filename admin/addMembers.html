@@ -72,10 +72,12 @@
             }
 
             window.uploadImage = (data) => {
+                document.querySelector(".info").style.display = "block";
                 const imgRef = ref(storage, "members/" + data.name);
                 const imageRef = imgRef._location.path;
                 return uploadBytes(imgRef, data).then((snapshot) => {
                     return getDownloadURL(snapshot.ref).then((imageURL) => {
+                        document.querySelector(".info").style.display = "none";
                         return { imageRef, imageURL };
                     });
                 });
@@ -89,6 +91,13 @@
                 };
                 await setDoc(doc(db, "members", uuidv4()), data);
                 document.getElementById("members-form").reset();
+
+                document.querySelector(".success").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("submitbtn").innerText = "Submit";
+                    document.querySelector("#submitbtn").disabled = false;
+                    document.querySelector(".success").style.display = "none";
+                }, 2000);
             };
         </script>
 
@@ -129,6 +138,7 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
         />
         <link rel="stylesheet" href="addGDs.css" />
+        <link rel="stylesheet" href="form.css" />
     </head>
     <body>
         <div class="container">
@@ -146,6 +156,15 @@
                                     role="form"
                                     onsubmit="addMember(event)"
                                 >
+                                    <span class="error">
+                                        Something went wrong!!!</span
+                                    >
+                                    <span class="success">
+                                        Member Added Successfully!!!</span
+                                    >
+                                    <span class="info">
+                                        Uploading Image...</span
+                                    >
                                     <div class="controls">
                                         <div class="row">
                                             <div class="col-md-12">

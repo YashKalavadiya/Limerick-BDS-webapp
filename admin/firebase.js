@@ -111,11 +111,13 @@ const handleSubmit = async (e) => {
     document.querySelector(".error").style.display = "none";
     const title = getValbyID("name");
     const author = getValbyID("author");
+    const speakersDesignation = getValbyID("designation");
     const date = getValbyID("date");
     if (title && author && date && imageUrl) {
         setDoc(doc(db, "workshops", uuidv4()), {
             title,
             author,
+            speakersDesignation,
             date,
             imageUrl,
         })

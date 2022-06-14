@@ -18,7 +18,7 @@
                 getAuth,
                 onAuthStateChanged,
             } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-auth.js";
-            
+
             // TODO: Add SDKs for Firebase products that you want to use
             // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -61,14 +61,22 @@
                 );
             }
 
-
             window.uploadData = async (data) => {
+                document.querySelector(".info").style.display = "block";
+
                 data = {
                     ...data,
                     createdOn: serverTimestamp(),
                 };
                 await setDoc(doc(db, "publications", uuidv4()), data);
                 document.getElementById("publicatiom-form").reset();
+                document.querySelector(".success").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("submitbtn").innerText = "Submit";
+                    document.querySelector("#submitbtn").disabled = false;
+                    document.querySelector(".success").style.display = "none";
+                }, 2000);
+                document.querySelector(".info").style.display = "none";
             };
         </script>
 
@@ -110,6 +118,8 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
         />
         <link rel="stylesheet" href="addPublications.css" />
+
+        <link rel="stylesheet" href="form.css" />
     </head>
     <body>
         <div class="container">
@@ -127,6 +137,13 @@
                                     role="form"
                                     onsubmit="submitPublication(event)"
                                 >
+                                    <span class="error">
+                                        Something went wrong!!!</span
+                                    >
+                                    <span class="success">
+                                        Publication Added Successfully!!!</span
+                                    >
+                                    <span class="info"> Uploading data...</span>
                                     <div class="controls">
                                         <div id="authorNames"></div>
                                         <button
@@ -140,7 +157,8 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="form_email"
-                                                        >Title of the paper</label
+                                                        >Title of the
+                                                        paper</label
                                                     >
                                                     <input
                                                         id="title"
@@ -155,7 +173,8 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="form_email"
-                                                        >DOI URL of the paper</label
+                                                        >DOI URL of the
+                                                        paper</label
                                                     >
                                                     <input
                                                         id="doi"
@@ -170,7 +189,8 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="form_email"
-                                                        >Name of the project</label
+                                                        >Name of the
+                                                        project</label
                                                     >
                                                     <input
                                                         id="project"
@@ -189,6 +209,7 @@
                                                     type="submit"
                                                     class="btn btn-success btn-send pt-2 btn-block"
                                                     value="Submit"
+                                                    id="submitbtn"
                                                 />
                                             </div>
                                         </div>
@@ -212,7 +233,6 @@
 
         const updatePublisher = (e, idx) => {
             publishers[idx] = e.target.value;
-            console.log(publishers);
         };
 
         const deletePublisher = (idx) => {
@@ -222,7 +242,6 @@
             ];
             const element = document.getElementById(`author_${idx}`);
             element.remove();
-            console.log(publishers);
             publishersCount -= 1;
             reRenderElements();
         };
@@ -246,7 +265,7 @@
                         id="name_${i}"
                         type="text"
                         name="name"
-                        value="${publishers[i]}"
+                        value="${publishers[i] ? publishers[i] : ""}"
                         class="form-control"
                         placeholder="Please enter author's name"
                         required="required"

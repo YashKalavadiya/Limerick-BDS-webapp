@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Add Member</title>
+        <title>Add Project</title>
         <script type="module">
             // Import the functions you need from the SDKs you need
             import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
@@ -72,11 +72,13 @@
             }
 
             window.uploadImage = (data, bucket) => {
+                document.querySelector(".info").style.display = "block";
                 const imgRef = ref(storage, "projects/" + bucket + "/" + data.name);
                 const imageRef = imgRef._location.path;
                 return uploadBytes(imgRef, data).then((snapshot) => {
                     return getDownloadURL(snapshot.ref).then((imageURL) => {
                         console.log("Uploaded", imageURL)
+                        document.querySelector(".info").style.display = "none";
                         return { imageRef, imageURL };
                     });
                 });
@@ -90,6 +92,13 @@
                 };
                 await setDoc(doc(db, "projects", uuidv4()), data);
                 document.getElementById("project-form").reset();
+
+                document.querySelector(".success").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("submitbtn").innerText = "Submit";
+                    document.querySelector("#submitbtn").disabled = false;
+                    document.querySelector(".success").style.display = "none";
+                }, 1500);
             };
         </script>
 
@@ -130,6 +139,9 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
         />
         <link rel="stylesheet" href="addGDs.css" />
+
+        <link rel="stylesheet" href="form.css" />
+
     </head>
     <body>
         <div class="container">
@@ -146,6 +158,15 @@
                                     id="project-form"
                                     role="form"
                                     onsubmit="addProject(event)"
+                                >
+                                <span class="error">
+                                    Something went wrong!!!</span
+                                >
+                                <span class="success">
+                                    Discussion Added Successfully!!!</span
+                                >
+                                <span class="info">
+                                    Uploading Image...</span
                                 >
                                     <div class="controls">
                                         <div class="row">
