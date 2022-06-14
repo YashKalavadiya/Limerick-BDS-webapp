@@ -37,6 +37,7 @@ label {
 	background: #fff;		
 	padding: 20px;
 	margin-bottom: 30px;
+    min-height: 150px;
 } 
 
  .title {

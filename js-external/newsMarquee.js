@@ -1,11 +1,10 @@
 const firebaseConfig = {
-	apiKey: "AIzaSyAu4pJ3eYhFvTjEOqQyjvd-TQwhk0281vA",
-	authDomain: "limerick-db-f3381.firebaseapp.com",
-	projectId: "limerick-db-f3381",
-	storageBucket: "limerick-db-f3381.appspot.com",
-	messagingSenderId: "765075578322",
-	appId: "1:765075578322:web:eecd0f022cee0a6f60bc0b",
-	measurementId: "G-2RKGVM8YGV",
+	apiKey: "AIzaSyBqJHXbl4Rq-KYxoGTT4mRwikBCKe6E9Xo",
+	authDomain: "limerick-db.firebaseapp.com",
+	projectId: "limerick-db",
+	storageBucket: "limerick-db.appspot.com",
+	messagingSenderId: "43009373528",
+	appId: "1:43009373528:web:0e71dcb01a9f807fe3a12d",
 };
 
 // Initialize Firebase

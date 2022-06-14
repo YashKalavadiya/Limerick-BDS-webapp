@@ -84,3 +84,7 @@
   .mtop {
     margin-top: 45px;
   }
+
+  label {
+    color: black;
+  }
